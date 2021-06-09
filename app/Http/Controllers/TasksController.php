@@ -77,10 +77,15 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         
-        //　タスク詳細ビューでそれを表示
-        return view("tasks.show", [
-            "task" => $task,
-        ]);
+        if(\Auth::id() === $task->user_id){
+            //　タスク詳細ビューでそれを表示
+            return view("tasks.show", [
+                "task" => $task,
+            ]);
+        }
+        else {
+            return back();
+        }
     }
 
     /**
@@ -93,10 +98,15 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         
-        // タスク編集のビューを表示
-        return view("tasks.edit", [
-            "task" => $task,
-        ]);
+        if(\Auth::id() === $task->user_id){
+            // タスク編集のビューを表示
+            return view("tasks.edit", [
+                "task" => $task,
+            ]);
+        }
+        else {
+            return back();
+        }
     }
 
     /**
@@ -117,7 +127,10 @@ class TasksController extends Controller
         $task = Task::findOrFail($id);
         $task->status = $request->status;
         $task->content = $request->content;
-        $task->save();
+        
+        if(\Auth::id() === $task->user_id){
+            $task->save();
+        }
         
         return redirect("/");
     }
@@ -132,7 +145,9 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         
-        $task->delete();
+        if (\Auth::id() === $task->user_id) {
+            $task->delete();
+        }
         
         return redirect("/");
     }
