@@ -20,10 +20,19 @@
                 <div class="collapse navbar-collapse" id="nav-bar">
                     <ul class="navbar-nav mr-auto"></ul>
                     <ul class="navbar-nav">
-                        {{--タスク作成ページへのリンク--}}
-                        <li class="nav-item">{!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'nav-link']) !!}</li>
-                        {{--ユーザ登録ページへのリンク--}}
-                        <li class="nav-item">{!! link_to_route('signup.get', 'サインアップ', [], ['class' => 'nav-link']) !!}</li>
+                        @if (Auth::check())
+                            {{--ユーザネームの表示--}}
+                            <li class="nav-item">{{ Auth::user()->name }}</li>
+                            {{--タスク作成ページへのリンク--}}
+                            <li class="nav-item">{!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'nav-link']) !!}</li>
+                            {{-- ログアウトへのリンク --}}
+                            <li class="nav-item">{!! link_to_route('logout.get', 'ログアウト') !!}</li>
+                        @else
+                            {{--ユーザ登録ページへのリンク--}}
+                            <li class="nav-item">{!! link_to_route('signup.get', 'サインアップ', [], ['class' => 'nav-link']) !!}</li>
+                            {{-- ログインページへのリンク --}}
+                            <li class="nav-item">{!! link_to_route('login', 'ログイン', [], ['class' => 'nav-link']) !!}</li>
+                        @endif
                     </ul>
                 </div>
             </nav>
